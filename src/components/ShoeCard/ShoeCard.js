@@ -36,14 +36,12 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <OverflowWrapper>
-            <Image alt="" src={imageSrc} />
-          </OverflowWrapper>
-          {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
-          {variant === 'new-release' && (
-            <NewFlag>Just released!</NewFlag>
-          )}
+          <Image alt="" src={imageSrc} />
         </ImageWrapper>
+        {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
+        {variant === 'new-release' && (
+          <NewFlag>Just released!</NewFlag>
+        )}
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
@@ -87,29 +85,28 @@ const Link = styled.a`
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
-
-const ImageWrapper = styled.div`
+const Wrapper = styled.article`
   position: relative;
 `;
 
-const OverflowWrapper = styled.div`
-  width: 100%;
+const ImageWrapper = styled.div`
   overflow: hidden;
-`
+  border-radius: 16px 16px 4px 4px;
+`;
 
 const Image = styled.img`
+  display: block;
   width: 100%;
-  border-radius: 16px 16px 4px 4px;
-
-  @media (prefers-reduced-motion: no-preference) {
-    filter: blur(4px); 
-    transition: transform ease-in-out 500ms, filter ease-in-out 500ms;
-    transform-origin: bottom;
-    &:hover {
+  
+  @media (hover:hover) and (prefers-reduced-motion: no-preference) {
+    will-change: transform;
+    filter: brightness(90%);
+    transition: transform ease-in-out 500ms, filter ease-in-out 1000ms;
+    transform-origin: 50% 75%;
+    ${Link}:hover &, ${Link}:focus {
       transform: scale(1.1);
-      transition: 200ms;
-      filter: blur(0)
+      transition: transform 200ms, filter 400ms;
+      filter: brightness(100%)
     }
   }
 `;
