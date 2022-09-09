@@ -1,4 +1,5 @@
 import React from 'react';
+import { keyframes } from 'styled-components';
 import styled from 'styled-components/macro';
 
 import { WEIGHTS } from '../../constants';
@@ -35,7 +36,9 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <Image alt="" src={imageSrc} />
+          <OverflowWrapper>
+            <Image alt="" src={imageSrc} />
+          </OverflowWrapper>
           {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
           {variant === 'new-release' && (
             <NewFlag>Just released!</NewFlag>
@@ -68,6 +71,17 @@ const ShoeCard = ({
   );
 };
 
+const slideIn = keyframes`
+  from {
+    transform: translateX(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+`
+
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
@@ -79,9 +93,25 @@ const ImageWrapper = styled.div`
   position: relative;
 `;
 
+const OverflowWrapper = styled.div`
+  width: 100%;
+  overflow: hidden;
+`
+
 const Image = styled.img`
   width: 100%;
   border-radius: 16px 16px 4px 4px;
+
+  @media (prefers-reduced-motion: no-preference) {
+    filter: blur(4px); 
+    transition: transform ease-in-out 500ms, filter ease-in-out 500ms;
+    transform-origin: bottom;
+    &:hover {
+      transform: scale(1.1);
+      transition: 200ms;
+      filter: blur(0)
+    }
+  }
 `;
 
 const Row = styled.div`
@@ -121,6 +151,11 @@ const Flag = styled.div`
   font-weight: ${WEIGHTS.bold};
   color: var(--color-white);
   border-radius: 2px;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ${slideIn} 1000ms ease-out both;
+    animation-delay: 500ms;
+  }
 `;
 
 const SaleFlag = styled(Flag)`
